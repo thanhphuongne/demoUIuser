@@ -82,12 +82,19 @@ export const HomePage: React.FC = () => {
 
   const getVisibleFields = () => {
     if (popularFields.length === 0) return [];
-    const fields = [];
-    for (let i = 0; i < 4; i++) {
-      const index = (currentSlide + i) % popularFields.length;
-      fields.push(popularFields[index]);
+
+    // If we have 4 or more fields, show 4 unique fields
+    if (popularFields.length >= 4) {
+      const fields = [];
+      for (let i = 0; i < 4; i++) {
+        const index = (currentSlide + i) % popularFields.length;
+        fields.push(popularFields[index]);
+      }
+      return fields;
     }
-    return fields;
+
+    // If we have fewer than 4 fields, just return all available fields
+    return popularFields;
   };
 
   const nextSlide = () => {
@@ -130,12 +137,19 @@ export const HomePage: React.FC = () => {
   };
   const getVisibleTestimonials = () => {
     if (testimonials.length === 0) return [];
-    const visibleTestimonials = [];
-    for (let i = 0; i < 3; i++) {
-      const index = (currentSlide + i) % testimonials.length;
-      visibleTestimonials.push(testimonials[index]);
+
+    // If we have 3 or more testimonials, show 3 unique testimonials
+    if (testimonials.length >= 3) {
+      const visibleTestimonials = [];
+      for (let i = 0; i < 3; i++) {
+        const index = (currentTestimonialSlide + i) % testimonials.length;
+        visibleTestimonials.push(testimonials[index]);
+      }
+      return visibleTestimonials;
     }
-    return visibleTestimonials;
+
+    // If we have fewer than 3 testimonials, just return all available testimonials
+    return testimonials;
   };
 
   return (
@@ -812,10 +826,10 @@ export const HomePage: React.FC = () => {
                 <ChevronLeft className="w-7 h-7 text-green-600 group-hover:text-green-700" />
               </button>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto max-w-6xl">
-                {getVisibleFields().map((field) => {
+                {getVisibleFields().map((field, index) => {
                   return (
                     <div
-                      key={field.id}
+                      key={`popular-field-${field.id}-${index}`}
                       className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100"
                     >
                       <div className="relative h-56">
