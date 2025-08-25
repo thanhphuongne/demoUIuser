@@ -3,7 +3,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { useAuthInit } from '@/hooks/useAuthInit';
+// import { useAuthInit } from '@/hooks/useAuthInit';
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ export const ConditionalLayout: React.FC<ConditionalLayoutProps> = ({ children }
   const pathname = usePathname();
 
   // Initialize authentication on app startup
-  useAuthInit();
+  // useAuthInit(); // Temporarily disabled
 
   // Define routes that should not have Header and Footer
   const authRoutes = ['/login', '/register', '/forgot-password'];
