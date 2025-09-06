@@ -69,7 +69,12 @@ export default function Register() {
     setLocalError('');
     clearError();
 
-    if (!validateForm()) return;
+    console.log('Form submitted with data:', formData);
+
+    if (!validateForm()) {
+      console.log('Form validation failed');
+      return;
+    }
 
     try {
       const registerData: RegisterData = {
@@ -78,7 +83,10 @@ export default function Register() {
         phone: formData.phone,
         password: formData.password
       };
+
+      console.log('Calling register with data:', registerData);
       await register(registerData);
+      console.log('Registration successful, redirecting...');
       router.push('/'); // Redirect to home page after successful registration
     } catch (err) {
       // Error is handled by the store
@@ -148,6 +156,13 @@ export default function Register() {
                 required
               />
             </div>
+            <button
+              type="button"
+              onClick={() => handleInputChange('email', `test${Date.now()}@example.com`)}
+              className="mt-1 text-xs text-blue-600 hover:text-blue-700"
+            >
+              Generate unique email for testing
+            </button>
           </div>
 
           {/* Phone Field */}

@@ -99,13 +99,19 @@ export const authService = {
         password: data.password,
         confirmPassword: data.password, // Assuming frontend validates this
         fullName: data.name,
+        phone: data.phone,
         accountType: 0 // Default account type based on your Postman collection
       };
+
+      console.log('Sending register request to API:', registerPayload);
+      console.log('API URL:', `${process.env.NEXT_PUBLIC_API_URL}/auth/register`);
 
       const response = await apiRequest('/auth/register', {
         method: 'POST',
         body: JSON.stringify(registerPayload),
       });
+
+      console.log('Register API response:', response);
 
       // Store the token
       if (response.token) {
@@ -126,6 +132,10 @@ export const authService = {
 
       return user;
     } catch (error) {
+      console.error('Register API error:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+      }
       throw new Error(error instanceof Error ? error.message : 'Đăng ký thất bại');
     }
   },
