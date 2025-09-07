@@ -3,7 +3,7 @@
 import { AuthUser, LoginCredentials, RegisterData } from "@/types/auth";
 
 // API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:5001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 // Token management
 const TOKEN_KEY = 'auth_token';
