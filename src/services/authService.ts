@@ -48,7 +48,25 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+
+      // Handle different error response formats
+      let errorMessage = `HTTP error! status: ${response.status}`;
+
+      if (errorData.errors && Array.isArray(errorData.errors) && errorData.errors.length > 0) {
+        // ASP.NET Core validation errors: {"message": "Registration failed", "errors": ["error1", "error2"]}
+        errorMessage = errorData.errors[0];
+      } else if (errorData.message) {
+        // Simple error message format: {"message": "error text"}
+        errorMessage = errorData.message;
+      } else if (typeof errorData === 'object' && errorData !== null) {
+        // Validation error format: {"fieldName": ["error message"]}
+        const errorMessages = Object.values(errorData).flat();
+        if (errorMessages.length > 0) {
+          errorMessage = errorMessages[0] as string;
+        }
+      }
+
+      throw new Error(errorMessage);
     }
 
     return await response.json();
