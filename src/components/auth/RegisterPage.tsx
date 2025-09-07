@@ -15,11 +15,10 @@ export default function RegisterPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
-  
-  const { register } = useAuthStore();
+
+  const { register, loading, error, clearError } = useAuthStore();
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,35 +28,35 @@ export default function RegisterPage() {
 
   const validateForm = () => {
     if (!formData.name.trim()) {
-      setError('Vui lòng nhập họ tên');
+      setLocalError('Vui lòng nhập họ tên');
       return false;
     }
     if (!formData.email.trim()) {
-      setError('Vui lòng nhập email');
+      setLocalError('Vui lòng nhập email');
       return false;
     }
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setError('Email không hợp lệ');
+      setLocalError('Email không hợp lệ');
       return false;
     }
     if (!formData.phone.trim()) {
-      setError('Vui lòng nhập số điện thoại');
+      setLocalError('Vui lòng nhập số điện thoại');
       return false;
     }
     if (!/^(\+84|0)[0-9]{9,10}$/.test(formData.phone.replace(/\s/g, ''))) {
-      setError('Số điện thoại không hợp lệ');
+      setLocalError('Số điện thoại không hợp lệ');
       return false;
     }
     if (formData.password.length < 6) {
-      setError('Mật khẩu phải có ít nhất 6 ký tự');
+      setLocalError('Mật khẩu phải có ít nhất 6 ký tự');
       return false;
     }
     if (formData.password !== formData.confirmPassword) {
-      setError('Mật khẩu xác nhận không khớp');
+      setLocalError('Mật khẩu xác nhận không khớp');
       return false;
     }
     if (!acceptTerms) {
-      setError('Vui lòng đồng ý với điều khoản sử dụng');
+      setLocalError('Vui lòng đồng ý với điều khoản sử dụng');
       return false;
     }
     return true;
@@ -65,11 +64,10 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setLocalError('');
+    clearError();
 
     if (!validateForm()) return;
-
-    setIsLoading(true);
 
     try {
       const registerData: RegisterData = {
@@ -81,9 +79,8 @@ export default function RegisterPage() {
       await register(registerData);
       router.push('/'); // Redirect to home page after successful registration
     } catch (err) {
-      setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
-    } finally {
-      setIsLoading(false);
+      // Error is handled by the store
+      console.error('Registration failed:', err);
     }
   };
 
@@ -110,9 +107,9 @@ export default function RegisterPage() {
         {/* Form */}
         <div className="bg-white rounded-lg shadow-lg p-8">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
+            {(error || localError) && (
               <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
-                {error}
+                {error || localError}
               </div>
             )}
 
@@ -283,10 +280,10 @@ export default function RegisterPage() {
             <div>
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={loading}
                 className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? (
+                {loading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                     Đang tạo tài khoản...

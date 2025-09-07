@@ -119,7 +119,7 @@ export const Header: React.FC = () => {
 
             {/* User Actions */}
             <div className="flex items-center space-x-4">
-              {isAuthenticated && user ? (
+              {mounted && isAuthenticated && user ? (
                 <div className="relative">
                   <button
                     onClick={(e) => {
@@ -212,18 +212,20 @@ export const Header: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => router.push('/login')}
-                    className="text-gray-700 hover:text-green-600 font-bold px-5 py-2.5 rounded-full hover:bg-green-50 transition-all duration-200 tracking-wide"
+                  <a
+                    href="/login"
+                    className="text-gray-700 hover:text-green-600 font-bold px-5 py-2.5 rounded-full hover:bg-green-50 transition-all duration-200 tracking-wide cursor-pointer z-50 relative inline-block"
+                    onClick={() => console.log('Login link clicked')}
                   >
                     Đăng nhập
-                  </button>
-                  <button
-                    onClick={() => router.push('/register')}
-                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2.5 rounded-full hover:shadow-lg hover:shadow-green-500/30 transition-all duration-200 hover:scale-105 font-bold tracking-wide"
+                  </a>
+                  <a
+                    href="/register"
+                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2.5 rounded-full hover:shadow-lg hover:shadow-green-500/30 transition-all duration-200 hover:scale-105 font-bold tracking-wide cursor-pointer z-50 relative inline-block"
+                    onClick={() => console.log('Register link clicked')}
                   >
                     Đăng ký
-                  </button>
+                  </a>
                 </div>
               )}
 

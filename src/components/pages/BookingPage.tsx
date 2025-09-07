@@ -387,7 +387,7 @@ export const BookingPage: React.FC = () => {
                   <tr>
                     <th className="border px-2 py-1">Khung giờ</th>
                     {weekDays.map((date, idx) => (
-                      <th key={idx} className="border px-2 py-1">
+                      <th key={`weekday-header-${idx}`} className="border px-2 py-1">
                         {formatDateDisplay(date)}
                       </th>
                     ))}
@@ -411,7 +411,7 @@ export const BookingPage: React.FC = () => {
                           if (!slot) {
                             return (
                               <td
-                                key={idx}
+                                key={`closed-${hour}-${idx}`}
                                 className="border px-2 py-1 text-center bg-red-200 text-red-700 cursor-not-allowed select-none"
                               >
                                 Ngoài giờ
@@ -421,7 +421,7 @@ export const BookingPage: React.FC = () => {
                           const isBooked = slot.isBooked;
                           return (
                             <td
-                              key={idx}
+                              key={`slot-${hour}-${idx}`}
                               className={`border px-2 py-1 text-center cursor-pointer transition
                                 ${isBooked ? 'bg-yellow-300 text-gray-700 cursor-not-allowed' : 'bg-green-200 hover:bg-green-300'}
                                 ${selectedTimeSlot?.id === slot.id ? 'ring-2 ring-green-600' : ''}

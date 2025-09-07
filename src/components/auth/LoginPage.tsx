@@ -9,25 +9,21 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  
-  const { login } = useAuthStore();
+
+  const { login, loading, error, clearError } = useAuthStore();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
+    clearError();
 
     try {
-    const credentials: LoginCredentials = { email, password };
-    await login(credentials);
+      const credentials: LoginCredentials = { email, password };
+      await login(credentials);
       router.push('/'); // Redirect to home page after successful login
     } catch (err) {
-      setError('Email hoặc mật khẩu không đúng');
-    } finally {
-      setIsLoading(false);
+      // Error is handled by the store
+      console.error('Login failed:', err);
     }
   };
 
@@ -141,10 +137,10 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={loading}
                 className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? (
+                {loading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                     Đang đăng nhập...

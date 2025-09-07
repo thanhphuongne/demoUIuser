@@ -82,12 +82,19 @@ export const HomePage: React.FC = () => {
 
   const getVisibleFields = () => {
     if (popularFields.length === 0) return [];
-    const fields = [];
-    for (let i = 0; i < 4; i++) {
-      const index = (currentSlide + i) % popularFields.length;
-      fields.push(popularFields[index]);
+
+    // If we have 4 or more fields, show 4 unique fields
+    if (popularFields.length >= 4) {
+      const fields = [];
+      for (let i = 0; i < 4; i++) {
+        const index = (currentSlide + i) % popularFields.length;
+        fields.push(popularFields[index]);
+      }
+      return fields;
     }
-    return fields;
+
+    // If we have fewer than 4 fields, just return all available fields
+    return popularFields;
   };
 
   const nextSlide = () => {
@@ -130,12 +137,19 @@ export const HomePage: React.FC = () => {
   };
   const getVisibleTestimonials = () => {
     if (testimonials.length === 0) return [];
-    const visibleTestimonials = [];
-    for (let i = 0; i < 3; i++) {
-      const index = (currentSlide + i) % testimonials.length;
-      visibleTestimonials.push(testimonials[index]);
+
+    // If we have 3 or more testimonials, show 3 unique testimonials
+    if (testimonials.length >= 3) {
+      const visibleTestimonials = [];
+      for (let i = 0; i < 3; i++) {
+        const index = (currentTestimonialSlide + i) % testimonials.length;
+        visibleTestimonials.push(testimonials[index]);
+      }
+      return visibleTestimonials;
     }
-    return visibleTestimonials;
+
+    // If we have fewer than 3 testimonials, just return all available testimonials
+    return testimonials;
   };
 
   return (
@@ -145,7 +159,7 @@ export const HomePage: React.FC = () => {
         <div className="absolute inset-0">
           {sportsImages.map((image, index) => (
             <div
-              key={index}
+              key={`hero-bg-${index}`}
               className={`absolute inset-0 transition-opacity duration-1000 ${
                 index === currentSlide ? "opacity-30" : "opacity-0"
               }`}
@@ -182,7 +196,7 @@ export const HomePage: React.FC = () => {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-3">
           {sportsImages.map((_, index) => (
             <button
-              key={index}
+              key={`hero-indicator-${index}`}
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide
@@ -334,7 +348,7 @@ export const HomePage: React.FC = () => {
               },
             ].map((feature, index) => (
               <div
-                key={index}
+                key={`feature-${index}`}
                 className={`group relative p-10 rounded-3xl bg-gradient-to-br ${feature.bgColor} backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/50 hover:-translate-y-3 overflow-hidden`}
               >
                 {/* Background Decoration */}
@@ -419,7 +433,7 @@ export const HomePage: React.FC = () => {
                 .fill(0)
                 .map((_, index) => (
                   <div
-                    key={index}
+                    key={`sports-skeleton-${index}`}
                     className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg min-h-[500px] animate-pulse"
                   >
                     <div className="w-28 h-28 bg-gray-200 rounded-3xl mx-auto mb-8"></div>
@@ -431,9 +445,9 @@ export const HomePage: React.FC = () => {
                   </div>
                 ))
             ) : mainSports.length > 0 ? (
-              mainSports.map((sport, index) => (
+              mainSports.map((sport) => (
                 <div
-                  key={index}
+                  key={sport.id}
                   className="group relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-white/20 overflow-hidden min-h-[500px]"
                   onClick={() => router.push(`/fields?sport=${sport.name}`)}
                   style={{ cursor: 'pointer' }}
@@ -626,7 +640,7 @@ export const HomePage: React.FC = () => {
                   },
                 ].map((feature, index) => (
                   <div
-                    key={index}
+                    key={`platform-feature-${index}`}
                     className="group flex items-start space-x-6 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1"
                   >
                     <div
@@ -725,7 +739,7 @@ export const HomePage: React.FC = () => {
                     "Tiếp cận hàng ngàn người chơi thể thao tại Quy Nhơn",
                 },
               ].map((benefit, index) => (
-                <div key={index} className="text-center group">
+                <div key={`benefit-${index}`} className="text-center group">
                   <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
                     {benefit.icon}
                   </div>
@@ -812,10 +826,10 @@ export const HomePage: React.FC = () => {
                 <ChevronLeft className="w-7 h-7 text-green-600 group-hover:text-green-700" />
               </button>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto max-w-6xl">
-                {getVisibleFields().map((field) => {
+                {getVisibleFields().map((field, index) => {
                   return (
                     <div
-                      key={field.id}
+                      key={`popular-field-${field.id}-${index}`}
                       className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100"
                     >
                       <div className="relative h-56">
@@ -900,7 +914,7 @@ export const HomePage: React.FC = () => {
             <div className="flex space-x-3 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg">
               {popularFields.map((_, index) => (
                 <button
-                  key={index}
+                  key={`popular-field-indicator-${index}`}
                   onClick={() => setCurrentSlide(index)}
                   className={`relative overflow-hidden rounded-full transition-all duration-500 ${
                     currentSlide === index
@@ -989,7 +1003,7 @@ export const HomePage: React.FC = () => {
             <div className="flex space-x-3 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg">
               {testimonials.map((_, index) => (
                 <button
-                  key={index}
+                  key={`testimonial-indicator-${index}`}
                   onClick={() => setCurrentTestimonialSlide(index)}
                   className={`relative overflow-hidden rounded-full transition-all duration-500 ${
                     currentTestimonialSlide === index

@@ -34,9 +34,11 @@ export type Field = {
 };
 
 export type MainSport = {
+  id: string;
   name: string;
   icon: string;
   description: string;
-  courts: number;
-  color: string;
+  courts?: number;
+  color?: string;
+  image?: string;
 };
