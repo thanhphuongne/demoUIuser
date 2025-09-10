@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Calendar, Check } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { RegisterData } from '@/types/auth';
-export default function RegisterPage() {
+export function RegisterPage() {
   const [formData, setFormData] = useState<RegisterData & { password: string; confirmPassword: string }>({
     name: '',
     email: '',
@@ -327,3 +327,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+export default RegisterPage;

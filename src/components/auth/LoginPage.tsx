@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, Calendar } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { LoginCredentials } from '@/types/auth';
-export default function LoginPage() {
+export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -181,3 +181,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;
